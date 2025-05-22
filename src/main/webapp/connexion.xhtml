@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Connexion - FanfareHub</title>
+</h:head>
+<h:body>
+    <h:form id="connexionForm">
+        <h:panelGrid columns="3">
+            <!-- Nom de fanfaron -->
+            <h:outputLabel for="nomFanfaron" value="Nom de fanfaron :" />
+            <h:inputText id="nomFanfaron" value="#{connexionBean.nomFanfaron}" required="true" />
+            <h:message for="nomFanfaron" style="color: red;" />
+
+            <!-- Mot de passe -->
+            <h:outputLabel for="motDePasse" value="Mot de passe :" />
+            <h:inputSecret id="motDePasse" value="#{connexionBean.motDePasse}" required="true" />
+            <h:message for="motDePasse" style="color: red;" />
+        </h:panelGrid>
+
+        <!-- Messages globaux -->
+        <h:messages globalOnly="true" style="color: red;" />
+
+        <!-- Bouton Se connecter -->
+        <h:commandButton value="Se connecter" action="#{connexionBean.connecter}" />
+    </h:form>
+</h:body>
+</html>

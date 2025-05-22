@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Inscription - FanfareHub</title>
+</h:head>
+<h:body>
+    <h:form id="inscriptionForm">
+        <h:panelGrid columns="3">
+            <!-- Nom de fanfaron -->
+            <h:outputLabel for="nomFanfaron" value="Nom de fanfaron :" />
+            <h:inputText id="nomFanfaron" value="#{inscriptionBean.fanfaron.nomFanfaron}" required="true">
+                <f:validateLength minimum="3" maximum="50" />
+            </h:inputText>
+            <h:message for="nomFanfaron" style="color: red;" />
+
+            <!-- Email -->
+            <h:outputLabel for="email" value="Adresse email :" />
+            <h:inputText id="email" value="#{inscriptionBean.fanfaron.email}" required="true">
+                <f:validateRegex pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
+            </h:inputText>
+            <h:message for="email" style="color: red;" />
+
+            <!-- Confirmation email -->
+            <h:outputLabel for="confirmationEmail" value="Confirmer l'email :" />
+            <h:inputText id="confirmationEmail" value="#{inscriptionBean.confirmationEmail}" required="true" />
+            <h:message for="confirmationEmail" style="color: red;" />
+
+            <!-- Mot de passe -->
+            <h:outputLabel for="motDePasse" value="Mot de passe :" />
+            <h:inputSecret id="motDePasse" value="#{inscriptionBean.motDePasse}" required="true">
+                <f:validateLength minimum="8" />
+            </h:inputSecret>
+            <h:message for="motDePasse" style="color: red;" />
+
+            <!-- Confirmation mot de passe -->
+            <h:outputLabel for="confirmationMotDePasse" value="Confirmer le mot de passe :" />
+            <h:inputSecret id="confirmationMotDePasse" value="#{inscriptionBean.confirmationMotDePasse}" required="true" />
+            <h:message for="confirmationMotDePasse" style="color: red;" />
+
+            <!-- Prénom -->
+            <h:outputLabel for="prenom" value="Prénom :" />
+            <h:inputText id="prenom" value="#{inscriptionBean.fanfaron.prenom}" required="true">
+                <f:validateLength minimum="2" maximum="50" />
+            </h:inputText>
+            <h:message for="prenom" style="color: red;" />
+
+            <!-- Nom -->
+            <h:outputLabel for="nom" value="Nom :" />
+            <h:inputText id="nom" value="#{inscriptionBean.fanfaron.nom}" required="true">
+                <f:validateLength minimum="2" maximum="50" />
+            </h:inputText>
+            <h:message for="nom" style="color: red;" />
+
+            <!-- Genre -->
+            <h:outputLabel for="genre" value="Genre :" />
+            <h:selectOneMenu id="genre" value="#{inscriptionBean.fanfaron.genre}" required="true">
+                <f:selectItem itemLabel="Sélectionner un genre" noSelectionOption="true" />
+                <f:selectItems value="#{genreBean.genres}" var="g" itemLabel="#{g.libelleGenre}" itemValue="#{g}" />
+            </h:selectOneMenu>
+            <h:message for="genre" style="color: red;" />
+
+            <!-- Contrainte alimentaire -->
+            <h:outputLabel for="contrainte" value="Contrainte alimentaire :" />
+            <h:selectOneMenu id="contrainte" value="#{inscriptionBean.fanfaron.contraintesAlimentaires}" required="true">
+                <f:selectItem itemLabel="Sélectionner une contrainte" noSelectionOption="true" />
+                <f:selectItems value="#{contrainteAlimentaireBean.contraintes}" var="c" itemLabel="#{c.libelleContrainte}" itemValue="#{c}" />
+            </h:selectOneMenu>
+            <h:message for="contrainte" style="color: red;" />
+        </h:panelGrid>
+
+        <!-- Messages globaux -->
+        <h:messages globalOnly="true" style="color: green;" />
+
+        <!-- Bouton S'inscrire -->
+        <h:commandButton value="S'inscrire" action="#{inscriptionBean.inscrire}" />
+    </h:form>
+</h:body>
+</html>
