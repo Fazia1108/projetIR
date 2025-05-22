@@ -13,6 +13,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpSession;
+
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -34,8 +36,7 @@ public class InscriptionBean {
     private String motDePasse;
     private String confirmationMotDePasse;
 
-    // Getters et setters pour fanfaron, confirmationEmail, motDePasse, confirmationMotDePasse
-
+    // Getters et setters
     public Fanfaron getFanfaron() { return fanfaron; }
     public void setFanfaron(Fanfaron fanfaron) { this.fanfaron = fanfaron; }
     public String getConfirmationEmail() { return confirmationEmail; }
@@ -46,20 +47,22 @@ public class InscriptionBean {
     public void setConfirmationMotDePasse(String confirmationMotDePasse) { this.confirmationMotDePasse = confirmationMotDePasse; }
 
     public String inscrire() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         if (!fanfaron.getEmail().equals(confirmationEmail)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les adresses email ne correspondent pas.", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les adresses email ne correspondent pas.", null));
             return null;
         }
         if (!motDePasse.equals(confirmationMotDePasse)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les mots de passe ne correspondent pas.", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les mots de passe ne correspondent pas.", null));
             return null;
         }
         if (fanfaronDao.findByNomFanfaron(fanfaron.getNomFanfaron()).isPresent()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ce nom de fanfaron est déjà utilisé.", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ce nom de fanfaron est déjà utilisé.", null));
             return null;
         }
         if (fanfaronDao.findByEmail(fanfaron.getEmail()).isPresent()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cette adresse email est déjà utilisée.", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cette adresse email est déjà utilisée.", null));
             return null;
         }
 
@@ -67,17 +70,29 @@ public class InscriptionBean {
         fanfaron.setMotDePasse(hashedPassword);
         fanfaron.setDateCreation(LocalDateTime.now());
 
-        // Récupérer les entités Genre et ContrainteAlimentaire par ID
-        Optional<Genre> selectedGenre = genreDao.findById(fanfaron.getGenre().getIdGenre());
-        selectedGenre.ifPresent(fanfaron::setGenre);
-        Optional<ContrainteAlimentaire> selectedContrainte = contrainteAlimentaireDao.findById(fanfaron.getContraintesAlimentaires().getIdContrainteAlimentaire());
-        selectedContrainte.ifPresent(fanfaron::setContraintesAlimentaires);
+        Integer idGenre = fanfaron.getGenre().getId();
+        Optional<Genre> genreOpt = genreDao.findById(idGenre);
+        if (genreOpt.isEmpty()) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Genre invalide.", null));
+            return null;
+        }
+        fanfaron.setGenre(genreOpt.get());
+
+        Integer idContrainte = fanfaron.getContraintesAlimentaires().getIdContrainteAlimentaire();
+        Optional<ContrainteAlimentaire> contrainteOpt = contrainteAlimentaireDao.findById(idContrainte);
+        if (contrainteOpt.isEmpty()) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contrainte alimentaire invalide.", null));
+            return null;
+        }
+        fanfaron.setContraintesAlimentaires(contrainteOpt.get());
 
         fanfaronDao.create(fanfaron);
 
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
         session.setAttribute("nomFanfaronConnecte", fanfaron.getNomFanfaron());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Inscription réussie. Vous êtes maintenant connecté.", null));
-        return "accueil?faces-redirect=true"; // Navigation vers la page d'accueil
+
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Inscription réussie. Vous êtes maintenant connecté.", null));
+        return "accueil?faces-redirect=true";
     }
+
 }

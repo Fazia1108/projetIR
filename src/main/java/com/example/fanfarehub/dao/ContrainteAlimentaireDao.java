@@ -8,4 +8,7 @@ public interface ContrainteAlimentaireDao {
     Optional<ContrainteAlimentaire> findById(Integer id);
 
     List<ContrainteAlimentaire> findAll();
+    boolean create(ContrainteAlimentaire contrainte);
+    boolean update(ContrainteAlimentaire contrainte);
+    boolean delete(int id);
 }
