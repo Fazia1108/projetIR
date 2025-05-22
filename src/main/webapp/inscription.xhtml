@@ -67,7 +67,7 @@
             <h:outputLabel for="contrainte" value="Contrainte alimentaire :" />
             <h:selectOneMenu id="contrainte" value="#{inscriptionBean.fanfaron.contraintesAlimentaires}" required="true">
                 <f:selectItem itemLabel="Sélectionner une contrainte" noSelectionOption="true" />
-                <f:selectItems value="#{contrainteAlimentaireBean.contraintes}" var="c" itemLabel="#{c.libelleContrainte}" itemValue="#{c}" />
+                <f:selectItems value="#{contrainteAlimentaireServlet.contraintes}" var="c" itemLabel="#{c.libelleContrainte}" itemValue="#{c}" />
             </h:selectOneMenu>
             <h:message for="contrainte" style="color: red;" />
         </h:panelGrid>
