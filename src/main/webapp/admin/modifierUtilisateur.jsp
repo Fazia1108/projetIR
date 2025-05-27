@@ -15,7 +15,7 @@
 <c:if test="${not empty erreur}">
     <p style="color:red">${erreur}</p>
 </c:if>
-<form method="post" action="${pageContext.request.contextPath}/modifierUtilisateur">
+<form method="post" action="${pageContext.request.contextPath}/admin/modifierUtilisateur">
     <input type="hidden" name="nomFanfaron" value="${utilisateur.nomFanfaron}" />
     <p>Nom: ${utilisateur.nomFanfaron}</p>
 

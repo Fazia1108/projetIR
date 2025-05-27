@@ -67,7 +67,7 @@ public class FanfaronDaoImpl implements FanfaronDao {
 
     @Override
     public void update(Fanfaron fanfaron) {
-        String sql = "UPDATE fanfaron SET email = ?, mdp = ?, prenom = ?, nom = ?, id_genre = ?, id_contrainte_alimentaire = ?, derniere_connexion = ? " +
+        String sql = "UPDATE fanfaron SET email = ?, mdp = ?, prenom = ?, nom = ?, id_genre = ?, id_contrainte_alimentaire = ?, derniere_connexion = ?, role = ? " +
                 "WHERE nom_fanfaron = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, fanfaron.getEmail());
@@ -77,7 +77,8 @@ public class FanfaronDaoImpl implements FanfaronDao {
             stmt.setObject(5, fanfaron.getGenre() != null ? fanfaron.getGenre().getId() : null);
             stmt.setObject(6, fanfaron.getContraintesAlimentaires() != null ? fanfaron.getContraintesAlimentaires().getIdContrainteAlimentaire() : null);
             stmt.setTimestamp(7, fanfaron.getDerniereConnexion() != null ? Timestamp.valueOf(fanfaron.getDerniereConnexion()) : null);
-            stmt.setString(8, fanfaron.getNomFanfaron());
+            stmt.setString(8, fanfaron.getRole());
+            stmt.setString(9, fanfaron.getNomFanfaron());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
