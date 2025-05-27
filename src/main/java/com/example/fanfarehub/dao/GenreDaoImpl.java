@@ -17,7 +17,7 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public Optional<Genre> findById(Integer id) {
-        String sql = "SELECT * FROM genre WHERE id = ?";
+        String sql = "SELECT * FROM genre WHERE id_genre = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -47,8 +47,8 @@ public class GenreDaoImpl implements GenreDao {
 
     private Genre map(ResultSet rs) throws SQLException {
         Genre genre = new Genre();
-        genre.setId(rs.getInt("id"));
-        genre.setLibelle(rs.getString("libelle"));
+        genre.setId(rs.getInt("id_genre"));
+        genre.setLibelle(rs.getString("libelle_genre"));
         return genre;
     }
 }

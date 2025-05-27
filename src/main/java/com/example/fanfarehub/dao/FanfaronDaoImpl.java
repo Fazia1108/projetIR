@@ -44,7 +44,7 @@ public class FanfaronDaoImpl implements FanfaronDao {
             e.printStackTrace();
         }
         return Optional.empty();
-    }
+   }
 
     @Override
     public void create(Fanfaron fanfaron) {
@@ -122,6 +122,7 @@ public class FanfaronDaoImpl implements FanfaronDao {
         f.setMotDePasse(rs.getString("mdp"));
         f.setPrenom(rs.getString("prenom"));
         f.setNom(rs.getString("nom"));
+        f.setRole(rs.getString("role"));
 
         Timestamp dateCreation = rs.getTimestamp("date_creation");
         if (dateCreation != null) {
