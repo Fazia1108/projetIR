@@ -1,0 +1,138 @@
+-- Création de la base
+CREATE DATABASE fanfaron;
+\c fanfaron;
+
+-- TABLE: genre
+CREATE TABLE genre (
+    id_genre SERIAL PRIMARY KEY,
+    libelle_genre VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- TABLE: contrainte_alimentaire
+CREATE TABLE contrainte_alimentaire (
+    id_contrainte_alimentaire SERIAL PRIMARY KEY,
+    libelle_contrainte VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- TABLE: fanfaron
+CREATE TABLE fanfaron (
+    nom_fanfaron VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    mdp VARCHAR(255) NOT NULL,
+    prenom VARCHAR(255) NOT NULL,
+    nom VARCHAR(255) NOT NULL,
+    date_creation TIMESTAMP NOT NULL,
+    derniere_connexion TIMESTAMP,
+    role VARCHAR(20) DEFAULT 'user',
+    id_genre INTEGER REFERENCES genre(id_genre),
+    id_contrainte_alimentaire INTEGER REFERENCES contrainte_alimentaire(id_contrainte_alimentaire)
+);
+
+-- TABLE: pupitre
+CREATE TABLE pupitre (
+    id_pupitre SERIAL PRIMARY KEY,
+    nom_pupitre VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- TABLE: fanfaron_pupitre (relation N-N)
+CREATE TABLE fanfaron_pupitre (
+    nom_fanfaron VARCHAR(255) REFERENCES fanfaron(nom_fanfaron) ON DELETE CASCADE,
+    id_pupitre INTEGER REFERENCES pupitre(id_pupitre) ON DELETE CASCADE,
+    PRIMARY KEY (nom_fanfaron, id_pupitre)
+);
+
+-- TABLE: groupe
+CREATE TABLE groupe (
+    id_groupe SERIAL PRIMARY KEY,
+    nom_groupe VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- TABLE: appartenance (relation N-N)
+CREATE TABLE appartenance (
+    nom_fanfaron VARCHAR(255) REFERENCES fanfaron(nom_fanfaron) ON DELETE CASCADE,
+    id_groupe INTEGER REFERENCES groupe(id_groupe) ON DELETE CASCADE,
+    PRIMARY KEY (nom_fanfaron, id_groupe)
+);
+
+-- TABLE: type_evenement
+CREATE TABLE type_evenement (
+    id_type_evenement SERIAL PRIMARY KEY,
+    libelle_type VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- TABLE: evenement
+CREATE TABLE evenement (
+    id_evenement SERIAL PRIMARY KEY,
+    nom_evenement VARCHAR(255) NOT NULL,
+    horodatage TIMESTAMP NOT NULL,
+    duree INTERVAL NOT NULL,
+    lieu VARCHAR(255) NOT NULL,
+    description TEXT,
+    id_type_evenement INTEGER REFERENCES type_evenement(id_type_evenement),
+    nom_fanfaron_createur VARCHAR(255) REFERENCES fanfaron(nom_fanfaron)
+);
+
+-- TABLE: instrument
+CREATE TABLE instrument (
+    id_instrument SERIAL PRIMARY KEY,
+    nom_instrument VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- TABLE: statut_participation
+CREATE TABLE statut_participation (
+    id_statut SERIAL PRIMARY KEY,
+    libelle_statut VARCHAR(50) UNIQUE NOT NULL,
+    couleur VARCHAR(20)
+);
+
+-- TABLE: inscription_evenement
+CREATE TABLE inscription_evenement (
+    nom_fanfaron VARCHAR(255) REFERENCES fanfaron(nom_fanfaron) ON DELETE CASCADE,
+    id_evenement INTEGER REFERENCES evenement(id_evenement) ON DELETE CASCADE,
+    id_instrument INTEGER REFERENCES instrument(id_instrument),
+    id_statut INTEGER REFERENCES statut_participation(id_statut),
+    PRIMARY KEY (nom_fanfaron, id_evenement)
+);
+
+-- INSERTS: genre
+INSERT INTO genre (libelle_genre) VALUES
+('homme'),
+('femme'),
+('autre');
+
+-- INSERTS: contrainte_alimentaire
+INSERT INTO contrainte_alimentaire (libelle_contrainte) VALUES
+('aucune'),
+('végétarien'),
+('vegan'),
+('sans porc');
+
+-- INSERTS: pupitre
+INSERT INTO pupitre (nom_pupitre) VALUES
+('clarinette'),
+('saxophone alto'),
+('euphonium'),
+('percussion'),
+('basse'),
+('trompette'),
+('saxophone baryton'),
+('trombone');
+
+-- INSERTS: groupe
+INSERT INTO groupe (nom_groupe) VALUES
+('commission prestation'),
+('commission artistique'),
+('commission logistique'),
+('commission communication interne');
+
+-- INSERTS: type_evenement
+INSERT INTO type_evenement (libelle_type) VALUES
+('atelier'),
+('répétition'),
+('prestation');
+
+-- INSERTS: statut_participation
+INSERT INTO statut_participation (libelle_statut, couleur) VALUES
+('présent', 'vert'),
+('absent', 'rouge'),
+('incertain', 'orange');
