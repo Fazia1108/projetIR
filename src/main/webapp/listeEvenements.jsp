@@ -15,6 +15,11 @@
 </head>
 <body>
 <h2>Liste des Événements</h2>
+<c:if test="${estDansPrestation}">
+    <form action="${pageContext.request.contextPath}/creerEvenement" method="get" style="display:inline;">
+        <button type="submit">Créer un Evenement</button>
+    </form>
+</c:if>
 
 <c:forEach var="evenement" items="${evenements}">
     <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">

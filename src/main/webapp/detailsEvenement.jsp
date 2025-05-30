@@ -26,7 +26,7 @@
         .statut-color {
             padding: 3px 8px;
             border-radius: 4px;
-            color: green;
+            color: white;
             font-weight: bold;
         }
     </style>
