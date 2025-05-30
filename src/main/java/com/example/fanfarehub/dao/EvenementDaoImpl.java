@@ -95,4 +95,23 @@ public class EvenementDaoImpl implements EvenementDao {
         return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
     }
 
+    @Override
+    public void update(Evenement evenement) {
+        String sql = "UPDATE Evenement SET nom_evenement = ?, horodatage = ?, duree = CAST(? AS interval), lieu = ?, description = ?, id_type_evenement = ? WHERE id_evenement = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, evenement.getNomEvenement());
+            stmt.setTimestamp(2, evenement.getHorodatage());
+            stmt.setString(3, toPostgresInterval(evenement.getDuree()));
+            stmt.setString(4, evenement.getLieu());
+            stmt.setString(5, evenement.getDescription());
+            stmt.setInt(6, evenement.getIdTypeEvenement());
+            stmt.setInt(7, evenement.getIdEvenement());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la mise à jour de l'événement", e);
+        }
+    }
+
 }

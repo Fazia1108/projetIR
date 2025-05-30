@@ -64,4 +64,12 @@ public class Evenement {
     public void setNomFanfaronCreateur(String nomFanfaronCreateur) {
         this.nomFanfaronCreateur = nomFanfaronCreateur;
     }
+
+    public long getHeures() {
+        return duree.toHours();
+    }
+
+    public long getMinutes() {
+        return duree.toMinutes() % 60;
+    }
 }

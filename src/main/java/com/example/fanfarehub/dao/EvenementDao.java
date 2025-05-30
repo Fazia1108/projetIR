@@ -10,4 +10,6 @@ public interface EvenementDao {
     public List<Evenement> findAll();
 
     Optional<Evenement> findById(int idEvenement);
+
+    public void update(Evenement evenement);
 }
