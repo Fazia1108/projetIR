@@ -127,6 +127,6 @@ INSERT INTO type_evenement (libelle_type) VALUES
 
 -- INSERTS: statut_participation
 INSERT INTO statut_participation (libelle_statut, couleur) VALUES
-('présent', 'vert'),
-('absent', 'rouge'),
+('présent', 'green'),
+('absent', 'red'),
 ('incertain', 'orange');
