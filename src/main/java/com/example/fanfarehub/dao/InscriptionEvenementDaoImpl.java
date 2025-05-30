@@ -81,4 +81,17 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
         return result;
     }
 
+    @Override
+    public void deleteByEvenement(int idEvenement) {
+        String sql = "DELETE FROM inscription_evenement WHERE id_evenement = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idEvenement);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

@@ -114,4 +114,15 @@ public class EvenementDaoImpl implements EvenementDao {
         }
     }
 
+    public void delete(int idEvenement) {
+        String sql = "DELETE FROM evenement WHERE id_evenement = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idEvenement);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la suppression de l'événement", e);
+        }
+    }
+
 }

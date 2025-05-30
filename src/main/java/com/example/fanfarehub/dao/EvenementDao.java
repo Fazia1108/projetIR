@@ -12,4 +12,5 @@ public interface EvenementDao {
     Optional<Evenement> findById(int idEvenement);
 
     public void update(Evenement evenement);
+    public void delete(int idEvenement);
 }
