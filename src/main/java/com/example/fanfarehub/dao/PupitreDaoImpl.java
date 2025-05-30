@@ -32,6 +32,7 @@ public class PupitreDaoImpl implements PupitreDao {
         return liste;
     }
 
+
     @Override
     public void insertFanfaronPupitre(String nomFanfaron, int idPupitre) {
         String sql = "INSERT INTO fanfaron_pupitre (nom_fanfaron, id_pupitre) VALUES (?, ?)";
@@ -71,4 +72,32 @@ public class PupitreDaoImpl implements PupitreDao {
         }
         return ids;
     }
+
+    @Override
+    public List<Pupitre> findByFanfaron(String nomFanfaron) {
+        List<Pupitre> pupitres = new ArrayList<>();
+        String sql = """
+        SELECT p.id_pupitre, p.nom_pupitre
+        FROM pupitre p
+        JOIN fanfaron_pupitre fp ON p.id_pupitre = fp.id_pupitre
+        WHERE fp.nom_fanfaron = ?
+    """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nomFanfaron);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Pupitre p = new Pupitre();
+                    p.setIdPupitre(rs.getInt("id_pupitre"));
+                    p.setNomPupitre(rs.getString("nom_pupitre"));
+                    pupitres.add(p);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Utilise un logger en production
+        }
+
+        return pupitres;
+    }
+
 }

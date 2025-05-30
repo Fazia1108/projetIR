@@ -6,7 +6,7 @@
     <title>Inscription à l'événement</title>
 </head>
 <body>
-<h2>Inscription à l'événement</h2>
+<h2>Inscription à : ${evenement.nomEvenement}</h2>
 
 <c:if test="${empty fanfaronConnecte}">
     <p>Vous devez être connecté pour vous inscrire.</p>
@@ -16,15 +16,15 @@
     <form method="post" action="${pageContext.request.contextPath}/inscriptionEvenement">
         <input type="hidden" name="idEvenement" value="${evenement.idEvenement}" />
 
-        <label>Instrument:
-            <select name="instrument" required>
-                <c:forEach var="instrument" items="${listeInstruments}">
-                    <option value="${instrument.idInstrument}">${instrument.nomInstrument}</option>
+        <label>Pupitre :
+            <select name="pupitre" required>
+                <c:forEach var="pupitre" items="${listePupitres}">
+                    <option value="${pupitre.idPupitre}">${pupitre.nomPupitre}</option>
                 </c:forEach>
             </select>
         </label><br/>
 
-        <label>Statut:
+        <label>Statut :
             <select name="statut" required>
                 <c:forEach var="statut" items="${listeStatuts}">
                     <option value="${statut.idStatut}">${statut.libelleStatut}</option>

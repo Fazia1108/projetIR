@@ -14,9 +14,9 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
     }
 
     @Override
-    public void upsert(String nomFanfaron, int idEvenement, int idInstrument, int idStatut) {
+    public void upsert(String nomFanfaron, int idEvenement, int idPupitre, int idStatut) {
         String deleteSql = "DELETE FROM inscription_evenement WHERE nom_fanfaron = ? AND id_evenement = ?";
-        String insertSql = "INSERT INTO inscription_evenement (nom_fanfaron, id_evenement, id_instrument, id_statut) VALUES (?, ?, ?, ?)";
+        String insertSql = "INSERT INTO inscription_evenement (nom_fanfaron, id_evenement, id_pupitre, id_statut) VALUES (?, ?, ?, ?)";
 
         try {
             connection.setAutoCommit(false);
@@ -30,7 +30,7 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
             try (PreparedStatement insertStmt = connection.prepareStatement(insertSql)) {
                 insertStmt.setString(1, nomFanfaron);
                 insertStmt.setInt(2, idEvenement);
-                insertStmt.setInt(3, idInstrument);
+                insertStmt.setInt(3, idPupitre); // remplacé idInstrument
                 insertStmt.setInt(4, idStatut);
                 insertStmt.executeUpdate();
             }
@@ -55,12 +55,12 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
     @Override
     public List<InscriptionDTO> findByEvenementGrouped(int idEvenement) {
         List<InscriptionDTO> result = new ArrayList<>();
-        String sql = "SELECT i.nom_fanfaron, ins.nom_instrument, s.libelle_statut, s.couleur " +
+        String sql = "SELECT i.nom_fanfaron, p.nom_pupitre, s.libelle_statut, s.couleur " +
                 "FROM inscription_evenement i " +
-                "JOIN instrument ins ON i.id_instrument = ins.id_instrument " +
+                "JOIN pupitre p ON i.id_pupitre = p.id_pupitre " +
                 "JOIN statut_participation s ON i.id_statut = s.id_statut " +
                 "WHERE i.id_evenement = ? " +
-                "ORDER BY ins.nom_instrument, s.id_statut";
+                "ORDER BY p.nom_pupitre, s.id_statut";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idEvenement);
@@ -68,7 +68,7 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
                 while (rs.next()) {
                     InscriptionDTO dto = new InscriptionDTO();
                     dto.setNomFanfaron(rs.getString("nom_fanfaron"));
-                    dto.setNomInstrument(rs.getString("nom_instrument"));
+                    dto.setNomInstrument(rs.getString("nom_pupitre")); // Adapter le nom si tu veux
                     dto.setLibelleStatut(rs.getString("libelle_statut"));
                     dto.setCouleur(rs.getString("couleur"));
                     result.add(dto);
@@ -80,4 +80,5 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
 
         return result;
     }
+
 }

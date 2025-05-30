@@ -72,12 +72,6 @@ CREATE TABLE evenement (
     nom_fanfaron_createur VARCHAR(255) REFERENCES fanfaron(nom_fanfaron)
 );
 
--- TABLE: instrument
-CREATE TABLE instrument (
-    id_instrument SERIAL PRIMARY KEY,
-    nom_instrument VARCHAR(100) UNIQUE NOT NULL
-);
-
 -- TABLE: statut_participation
 CREATE TABLE statut_participation (
     id_statut SERIAL PRIMARY KEY,
@@ -85,11 +79,11 @@ CREATE TABLE statut_participation (
     couleur VARCHAR(20)
 );
 
--- TABLE: inscription_evenement
+-- TABLE: inscription_evenement (modifiée)
 CREATE TABLE inscription_evenement (
     nom_fanfaron VARCHAR(255) REFERENCES fanfaron(nom_fanfaron) ON DELETE CASCADE,
     id_evenement INTEGER REFERENCES evenement(id_evenement) ON DELETE CASCADE,
-    id_instrument INTEGER REFERENCES instrument(id_instrument),
+    id_pupitre INTEGER REFERENCES pupitre(id_pupitre),
     id_statut INTEGER REFERENCES statut_participation(id_statut),
     PRIMARY KEY (nom_fanfaron, id_evenement)
 );

@@ -44,11 +44,11 @@ public class InscriptionEvenementServlet extends HttpServlet {
 
         try {
             int idEvenement = Integer.parseInt(request.getParameter("idEvenement"));
-            int idInstrument = Integer.parseInt(request.getParameter("instrument"));
+            int idPupitre = Integer.parseInt(request.getParameter("pupitre"));
             int idStatut = Integer.parseInt(request.getParameter("statut"));
 
-            // Inscription ou mise à jour
-            inscriptionDao.upsert(fanfaron.getNomFanfaron(), idEvenement, idInstrument, idStatut);
+            inscriptionDao.upsert(fanfaron.getNomFanfaron(), idEvenement, idPupitre, idStatut);
+
 
             response.sendRedirect(request.getContextPath() + "/detailsEvenement?id=" + idEvenement);
         } catch (NumberFormatException e) {
