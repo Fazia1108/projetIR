@@ -14,17 +14,20 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
+import com.example.fanfarehub.util.PasswordHasher;
 
 @WebServlet("/connexion")
 public class ConnexionServlet extends HttpServlet {
 
     private FanfaronDaoImpl fanfaronDao;
+    private PasswordHasher passwordHasher;
 
     @Override
     public void init() throws ServletException {
         try {
             Connection connection = DbConnectionManager.getInstance().getConnection();
             this.fanfaronDao = new FanfaronDaoImpl(connection);
+            this.passwordHasher = new PasswordHasher();
         } catch (SQLException e) {
             throw new ServletException("Erreur d'initialisation DAO", e);
         }
@@ -47,10 +50,16 @@ public class ConnexionServlet extends HttpServlet {
         try {
             Optional<Fanfaron> optionalFanfaron = fanfaronDao.findByNomFanfaron(nomFanfaron);
 
-            if (optionalFanfaron.isPresent() && optionalFanfaron.get().getMotDePasse().equals(motDePasse)) {
-                HttpSession session = request.getSession();
-                session.setAttribute("fanfaronConnecte", optionalFanfaron.get());
-                response.sendRedirect("accueil.jsp");
+            if (optionalFanfaron.isPresent()) {
+                Fanfaron fanfaron = optionalFanfaron.get();
+                if (passwordHasher.checkPassword(motDePasse, fanfaron.getMotDePasse())) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("fanfaronConnecte", fanfaron);
+                    response.sendRedirect("accueil.jsp");
+                } else {
+                    request.setAttribute("erreur", "Nom ou mot de passe incorrect.");
+                    request.getRequestDispatcher("/connexion.jsp").forward(request, response);
+                }
             } else {
                 request.setAttribute("erreur", "Nom ou mot de passe incorrect.");
                 request.getRequestDispatcher("/connexion.jsp").forward(request, response);

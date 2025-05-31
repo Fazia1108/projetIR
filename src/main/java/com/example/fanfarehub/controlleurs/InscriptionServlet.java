@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import com.example.fanfarehub.util.PasswordHasher;
+import java.time.LocalDateTime;
 
 @WebServlet("/inscription")
 public class InscriptionServlet extends HttpServlet {
@@ -20,6 +22,7 @@ public class InscriptionServlet extends HttpServlet {
     private FanfaronDaoImpl fanfaronDao;
     private GenreDaoImpl genreDao;
     private ContrainteAlimentaireDaoImpl contrainteDao;
+    private PasswordHasher passwordHasher;
 
     @Override
     public void init() throws ServletException {
@@ -28,6 +31,7 @@ public class InscriptionServlet extends HttpServlet {
             this.fanfaronDao = new FanfaronDaoImpl(connection);
             this.genreDao = new GenreDaoImpl(connection);
             this.contrainteDao = new ContrainteAlimentaireDaoImpl(connection);
+            this.passwordHasher = new PasswordHasher();
         } catch (SQLException e) {
             throw new ServletException("Erreur d'initialisation de la connexion JDBC", e);
         }
@@ -67,12 +71,14 @@ public class InscriptionServlet extends HttpServlet {
             int idGenre = Integer.parseInt(request.getParameter("id_genre"));
             int idContrainte = Integer.parseInt(request.getParameter("id_contrainte_alimentaire"));
 
+            String hashedPassword = passwordHasher.hash(motDePasse);
+
             // Chargement des entités liées
             Genre genre = genreDao.findById(idGenre).orElse(null);
             ContrainteAlimentaire contrainte = contrainteDao.findById(idContrainte).orElse(null);
 
             // Création du fanfaron
-            Fanfaron fanfaron = new Fanfaron(nomFanfaron, email, motDePasse, prenom, nom, genre, contrainte);
+            Fanfaron fanfaron = new Fanfaron(nomFanfaron, email, hashedPassword, prenom, nom, genre, contrainte);
 
             // Insertion dans la BDD
             fanfaronDao.create(fanfaron);
