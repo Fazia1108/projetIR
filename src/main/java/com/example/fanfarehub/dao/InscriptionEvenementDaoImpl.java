@@ -92,6 +92,26 @@ public class InscriptionEvenementDaoImpl implements InscriptionEvenementDao {
         }
     }
 
+    @Override
+    public boolean existeInscription(int idEvenement, String nomFanfaron) {
+        String sql = "SELECT COUNT(*) FROM inscriptionevenement WHERE id_evenement = ? AND nom_fanfaron = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idEvenement);
+            stmt.setString(2, nomFanfaron);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 
 
 }
