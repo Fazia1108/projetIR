@@ -52,7 +52,11 @@ public class ConnexionServlet extends HttpServlet {
 
             if (optionalFanfaron.isPresent()) {
                 Fanfaron fanfaron = optionalFanfaron.get();
-                if (passwordHasher.checkPassword(motDePasse, fanfaron.getMotDePasse())) {
+                String hashedPasswordFromDB = fanfaron.getMotDePasse();
+
+                boolean passwordMatches = passwordHasher.checkPassword(motDePasse, hashedPasswordFromDB);
+
+                if (passwordMatches) {
                     HttpSession session = request.getSession();
                     session.setAttribute("fanfaronConnecte", fanfaron);
                     response.sendRedirect("accueil.jsp");

@@ -1,84 +1,63 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - FanfareHub</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<form action="inscription" method="post">
-    <table>
-        <!-- Nom de fanfaron -->
-        <tr>
-            <td><label for="nomFanfaron">Nom de fanfaron :</label></td>
-            <td><input type="text" id="nomFanfaron" name="nomFanfaron" required minlength="3" maxlength="50"></td>
-        </tr>
+<div class="container">
+    <div class="main-nav">
+        <a href="${pageContext.request.contextPath}/accueil.jsp">Accueil</a> |
+        <a href="${pageContext.request.contextPath}/connexion">Se connecter</a>
+    </div>
 
-        <!-- Email -->
-        <tr>
-            <td><label for="email">Adresse email :</label></td>
-            <td><input type="email" id="email" name="email" required></td>
-        </tr>
+    <h2>Inscription</h2>
 
-        <!-- Confirmation email -->
-        <tr>
-            <td><label for="confirmationEmail">Confirmer l'email :</label></td>
-            <td><input type="email" id="confirmationEmail" name="confirmationEmail" required></td>
-        </tr>
+    <form action="inscription" method="post">
+        <label for="nomFanfaron">Nom de fanfaron :</label>
+        <input type="text" id="nomFanfaron" name="nomFanfaron" required minlength="3" maxlength="50">
 
-        <!-- Mot de passe -->
-        <tr>
-            <td><label for="motDePasse">Mot de passe :</label></td>
-            <td><input type="password" id="motDePasse" name="motDePasse" required minlength="8"></td>
-        </tr>
+        <label for="email">Adresse email :</label>
+        <input type="email" id="email" name="email" required>
 
-        <!-- Confirmation mot de passe -->
-        <tr>
-            <td><label for="confirmationMotDePasse">Confirmer le mot de passe :</label></td>
-            <td><input type="password" id="confirmationMotDePasse" name="confirmationMotDePasse" required></td>
-        </tr>
+        <label for="confirmationEmail">Confirmer l'email :</label>
+        <input type="email" id="confirmationEmail" name="confirmationEmail" required>
 
-        <!-- Prénom -->
-        <tr>
-            <td><label for="prenom">Prénom :</label></td>
-            <td><input type="text" id="prenom" name="prenom" required minlength="2" maxlength="50"></td>
-        </tr>
+        <label for="motDePasse">Mot de passe :</label>
+        <input type="password" id="motDePasse" name="motDePasse" required minlength="8">
 
-        <!-- Nom -->
-        <tr>
-            <td><label for="nom">Nom :</label></td>
-            <td><input type="text" id="nom" name="nom" required minlength="2" maxlength="50"></td>
-        </tr>
+        <label for="confirmationMotDePasse">Confirmer le mot de passe :</label>
+        <input type="password" id="confirmationMotDePasse" name="confirmationMotDePasse" required>
 
-        <!-- Genre -->
-        <tr>
-            <td>
-                <select name="id_genre" required>
-                    <option value="">-- Sélectionnez un genre --</option>
-                    <c:forEach items="${genres}" var="genre">
-                        <option value="${genre.id}">${genre.libelle}</option>
-                    </c:forEach>
-                </select>
-            </td>
-        </tr>
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required minlength="2" maxlength="50">
 
-        <!-- Contrainte alimentaire -->
-        <tr>
-            <td>
-                <select name="id_contrainte_alimentaire">
-                    <option value="">-- Aucune contrainte --</option>
-                    <c:forEach items="${contraintes}" var="c">
-                        <option value="${c.idContrainteAlimentaire}">${c.libelleContrainte}</option>
-                    </c:forEach>
-                </select>
-            </td>
-        </tr>
-    </table>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required minlength="2" maxlength="50">
 
-    <br>
-    <input type="submit" value="S'inscrire">
-</form>
+        <label for="id_genre">Genre :</label>
+        <select id="id_genre" name="id_genre" required>
+            <option value="">-- Sélectionnez un genre --</option>
+            <c:forEach items="${genres}" var="genre">
+                <option value="${genre.id}">${genre.libelle}</option>
+            </c:forEach>
+        </select>
+
+        <label for="id_contrainte_alimentaire">Contrainte alimentaire :</label>
+        <select id="id_contrainte_alimentaire" name="id_contrainte_alimentaire">
+            <option value="">-- Aucune contrainte --</option>
+            <c:forEach items="${contraintes}" var="c">
+                <option value="${c.idContrainteAlimentaire}">${c.libelleContrainte}</option>
+            </c:forEach>
+        </select>
+
+        <input type="submit" value="S'inscrire">
+    </form>
+</div>
 </body>
 </html>
