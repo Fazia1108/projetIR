@@ -47,7 +47,7 @@ public class CreerEvenementServlet extends HttpServlet {
         Fanfaron fanfaron = (session != null) ? (Fanfaron) session.getAttribute("fanfaronConnecte") : null;
 
         if (fanfaron == null || !estDansCommissionPrestation(fanfaron)) {
-            response.sendRedirect(request.getContextPath() + "/accueil");
+            response.sendRedirect(request.getContextPath() + "/accueil.jsp");
             return;
         }
 
@@ -56,8 +56,7 @@ public class CreerEvenementServlet extends HttpServlet {
 
     private boolean estDansCommissionPrestation(Fanfaron fanfaron) {
         List<Integer> groupesIds = groupeDao.findGroupeIdsByFanfaron(fanfaron.getNomFanfaron());
-        // Supposons que l'ID du groupe "commission prestation" est 3 (à adapter !)
-        int ID_COMMISSION_PRESTATION = 3;
+        int ID_COMMISSION_PRESTATION = 1;
         return groupesIds.contains(ID_COMMISSION_PRESTATION);
     }
 

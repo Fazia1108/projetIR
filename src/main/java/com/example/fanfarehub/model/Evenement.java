@@ -12,6 +12,7 @@ public class Evenement {
     private String lieu;
     private String description;
     private int idTypeEvenement;
+    private String nomTypeEvenement;
     private String nomFanfaronCreateur;
 
     // Getters et Setters
@@ -63,6 +64,15 @@ public class Evenement {
     }
     public void setNomFanfaronCreateur(String nomFanfaronCreateur) {
         this.nomFanfaronCreateur = nomFanfaronCreateur;
+    }
+
+    // AJOUTE LE GETTER ET LE SETTER POUR nomTypeEvenement
+    public String getNomTypeEvenement() {
+        return nomTypeEvenement;
+    }
+
+    public void setNomTypeEvenement(String nomTypeEvenement) {
+        this.nomTypeEvenement = nomTypeEvenement;
     }
 
     public long getHeures() {

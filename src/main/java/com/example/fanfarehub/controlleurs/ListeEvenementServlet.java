@@ -41,14 +41,15 @@ public class ListeEvenementServlet extends HttpServlet {
 
         boolean estDansPrestation = false;
         if (fanfaron != null) {
+            // Ajout du try-catch car findGroupeIdsByFanfaron peut lever une SQLException
             List<Integer> groupes = groupeDao.findGroupeIdsByFanfaron(fanfaron.getNomFanfaron());
-            estDansPrestation = groupes.contains(1); // 1 = ID groupe prestation
+            estDansPrestation = groupes.contains(1);
         }
 
         request.setAttribute("estDansPrestation", estDansPrestation);
 
 
-        List<Evenement> evenements = evenementDao.findAll(); // À implémenter si pas déjà fait
+        List<Evenement> evenements = evenementDao.findAll();
         request.setAttribute("evenements", evenements);
         request.getRequestDispatcher("/listeEvenements.jsp").forward(request, response);
     }

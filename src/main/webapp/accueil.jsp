@@ -20,12 +20,16 @@
             <div class="main-nav">
                 <a href="${pageContext.request.contextPath}/deconnexion">Se déconnecter</a>
             </div>
-            <h3>Fonctionnalités Connecté :</h3>
+            <h3>Fonctionnalités :</h3>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/evenements">Voir les événements</a></li>
                 <li><a href="${pageContext.request.contextPath}/choisirPupitres">Choisir mes pupitres</a></li>
                 <li><a href="${pageContext.request.contextPath}/choisirGroupes">Choisir mes groupes</a></li>
-                    <%-- Tu peux ajouter d'autres liens protégés ici --%>
+                    <%-- Ajout des liens ADMIN si le rôle est 'admin' --%>
+                <c:if test="${sessionScope.fanfaronConnecte.role == 'admin'}">
+                    <li><a href="${pageContext.request.contextPath}/admin/utilisateurs">Gérer les utilisateurs (Admin)</a></li>
+                    <%-- Tu peux ajouter d'autres liens admin ici si besoin --%>
+                </c:if>
             </ul>
         </c:when>
         <c:otherwise>

@@ -89,6 +89,6 @@ public class ChoisirGroupeServlet extends HttpServlet {
         }
 
         // Redirection vers la page de compte ou confirmation
-        response.sendRedirect(request.getContextPath() + "/monCompte");
+        response.sendRedirect(request.getContextPath() + "/accueil.jsp");
     }
 }
