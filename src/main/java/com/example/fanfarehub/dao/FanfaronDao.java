@@ -17,5 +17,5 @@ public interface FanfaronDao {
 
     List<Fanfaron> findAll();
 
-    void delete(Fanfaron fanfaron);
+    void delete(String nomFanfaron);
 }

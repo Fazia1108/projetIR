@@ -106,13 +106,13 @@ public class FanfaronDaoImpl implements FanfaronDao {
     }
 
     @Override
-    public void delete(Fanfaron fanfaron) {
+    public void delete(String nomFanfaron) {
         String sql = "DELETE FROM fanfaron WHERE nom_fanfaron = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, fanfaron.getNomFanfaron());
+            stmt.setString(1, nomFanfaron);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

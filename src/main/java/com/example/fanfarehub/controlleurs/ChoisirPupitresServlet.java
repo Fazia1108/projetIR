@@ -92,6 +92,6 @@ public class ChoisirPupitresServlet extends HttpServlet {
         }
 
         // Redirection ou message de confirmation
-        response.sendRedirect(request.getContextPath() + "/monCompte"); // ou une autre page de confirmation
+        response.sendRedirect(request.getContextPath() + "/accueil.jsp"); // ou une autre page de confirmation
     }
 }

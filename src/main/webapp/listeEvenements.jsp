@@ -50,6 +50,21 @@
             cursor: pointer;
             margin-bottom: 20px;
         }
+        /* Style pour le nouveau bouton "Détails/Inscriptions" */
+        .details-button {
+            background-color: #007bff; /* Bleu standard */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none; /* Pour que ça ressemble à un bouton plutôt qu'un lien */
+            display: inline-block; /* Pour le positionnement correct */
+        }
+        .details-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -88,9 +103,15 @@
                         <td>${event.duree.toHours()}h ${event.duree.toMinutes() % 60}min</td>
                         <td>${event.lieu}</td>
                         <td>${event.description}</td>
-                        <td>${event.nomTypeEvenement} <%-- Assumes your Evenement model has getNomTypeEvenement() or you fetch it --%></td>
+                        <td>${event.nomTypeEvenement}</td>
                         <td class="event-actions">
-                            <a href="${pageContext.request.contextPath}/inscriptionEvenement?idEvenement=${event.idEvenement}">S'inscrire</a>
+                                <%-- Nouveau lien pour consulter les détails/inscriptions --%>
+                            <a href="${pageContext.request.contextPath}/detailsEvenement?id=${event.idEvenement}" class="details-button">
+                                Consulter les inscriptions
+                            </a>
+                                <%-- Lien existant pour s'inscrire --%>
+                            <a href="${pageContext.request.contextPath}/inscriptionEvenementForm?idEvenement=${event.idEvenement}">S'inscrire</a>
+
                             <c:if test="${estDansPrestation}">
                                 <form action="${pageContext.request.contextPath}/modifierEvenement" method="get">
                                     <input type="hidden" name="idEvenement" value="${event.idEvenement}" />

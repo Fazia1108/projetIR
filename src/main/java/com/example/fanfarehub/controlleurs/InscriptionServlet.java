@@ -84,11 +84,11 @@ public class InscriptionServlet extends HttpServlet {
             fanfaronDao.create(fanfaron);
 
             // Redirection vers page de confirmation
-            response.sendRedirect("confirmation.jsp");
+            response.sendRedirect("accueil.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("erreur.jsp"); // à créer pour gérer les erreurs
+            response.sendRedirect("erreur.jsp");
         }
     }
 
