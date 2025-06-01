@@ -68,9 +68,7 @@
                     <th>Nom utilisateur</th>
                     <th>Email</th>
                     <th>Nom complet</th>
-                    <th>Genre</th>
                     <th>Rôle</th>
-                    <th>Dernière connexion</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -81,10 +79,6 @@
                         <td>${user.email}</td>
                         <td>${user.prenom} ${user.nom}</td>
                         <td>
-                                <%-- Gérer l'affichage du genre si tu as l'objet Genre dans user --%>
-                                ${user.genre}
-                        </td>
-                        <td>
                             <c:choose>
                                 <c:when test="${user.role eq 'admin'}">
                                     <span class="admin-label">Administrateur</span>
@@ -94,7 +88,6 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                        <td>${user.derniereConnexion}</td>
                         <td class="user-actions">
                             <form action="${pageContext.request.contextPath}/admin/modifierUtilisateur" method="get">
                                 <input type="hidden" name="nom" value="${user.nomFanfaron}" />
