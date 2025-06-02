@@ -107,14 +107,51 @@ public class FanfaronDaoImpl implements FanfaronDao {
 
     @Override
     public void delete(String nomFanfaron) {
-        String sql = "DELETE FROM fanfaron WHERE nom_fanfaron = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, nomFanfaron);
-            stmt.executeUpdate();
+        String sqlDeleteInscription = "DELETE FROM inscription_evenement WHERE nom_fanfaron = ?";
+        String sqlDeleteAppartenance = "DELETE FROM appartenance WHERE nom_fanfaron = ?";
+        String sqlDeletePupitre = "DELETE FROM fanfaron_pupitre WHERE nom_fanfaron = ?";
+        String sqlDeleteFanfaron = "DELETE FROM fanfaron WHERE nom_fanfaron = ?";
+
+        try {
+            connection.setAutoCommit(false); // Début de la transaction
+
+            try (PreparedStatement stmt1 = connection.prepareStatement(sqlDeleteInscription)) {
+                stmt1.setString(1, nomFanfaron);
+                stmt1.executeUpdate();
+            }
+
+            try (PreparedStatement stmt2 = connection.prepareStatement(sqlDeleteAppartenance)) {
+                stmt2.setString(1, nomFanfaron);
+                stmt2.executeUpdate();
+            }
+
+            try (PreparedStatement stmt3 = connection.prepareStatement(sqlDeletePupitre)) {
+                stmt3.setString(1, nomFanfaron);
+                stmt3.executeUpdate();
+            }
+
+            try (PreparedStatement stmt4 = connection.prepareStatement(sqlDeleteFanfaron)) {
+                stmt4.setString(1, nomFanfaron);
+                stmt4.executeUpdate();
+            }
+
+            connection.commit(); // Valider les suppressions
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            try {
+                connection.rollback(); // Annuler en cas d'erreur
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            throw new RuntimeException("Erreur lors de la suppression du fanfaron et de ses relations", e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 
     private Fanfaron map(ResultSet rs) throws SQLException {
         Fanfaron f = new Fanfaron();

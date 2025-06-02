@@ -71,4 +71,83 @@ public class GroupeDaoImpl implements GroupeDao {
         }
         return ids;
     }
+
+    @Override
+    public void insertGroupe(Groupe groupe) {
+        String sql = "INSERT INTO groupe (nom_groupe) VALUES (?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, groupe.getNomGroupe());
+            stmt.executeUpdate();
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    groupe.setIdGroupe(generatedKeys.getInt(1)); // récupère l’ID auto-généré
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateGroupe(int idGroupe, Groupe groupe) {
+        String sql = "UPDATE groupe SET nom_groupe = ? WHERE id_groupe = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, groupe.getNomGroupe());
+            stmt.setInt(2, idGroupe);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteGroupe(int idGroupe) {
+        String sqlDeleteAppartenance = "DELETE FROM appartenance WHERE id_groupe = ?";
+        String sqlDeleteGroupe = "DELETE FROM groupe WHERE id_groupe = ?";
+
+        try {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement stmt1 = connection.prepareStatement(sqlDeleteAppartenance)) {
+                stmt1.setInt(1, idGroupe);
+                stmt1.executeUpdate();
+            }
+
+            try (PreparedStatement stmt2 = connection.prepareStatement(sqlDeleteGroupe)) {
+                stmt2.setInt(1, idGroupe);
+                stmt2.executeUpdate();
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void deleteAppartenanceByGroupeId(int idGroupe) {
+        String sql = "DELETE FROM appartenance WHERE id_groupe = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idGroupe);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 }

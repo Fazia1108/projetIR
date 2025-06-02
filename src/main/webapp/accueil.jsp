@@ -28,6 +28,8 @@
                     <%-- Ajout des liens ADMIN si le rôle est 'admin' --%>
                 <c:if test="${sessionScope.fanfaronConnecte.role == 'admin'}">
                     <li><a href="${pageContext.request.contextPath}/admin/utilisateurs">Gérer les utilisateurs (Admin)</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/pupitres">Gérer les pupitres (Admin)</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/groupes">Gérer les groupes (Admin)</a></li>
                     <%-- Tu peux ajouter d'autres liens admin ici si besoin --%>
                 </c:if>
             </ul>

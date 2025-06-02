@@ -11,4 +11,10 @@ public interface PupitreDao {
     List<Integer> findPupitreIdsByFanfaron(String nomFanfaron);
 
     List<Pupitre> findByFanfaron(String nomFanfaron);
+    void deletePupitre(int idPupitre);
+    void updatePupitre(int idPupitre, Pupitre pupitre);
+    void insertPupitre(Pupitre pupitre);
+    void deleteFanfaronPupitreByPupitreId(int idPupitre);
+
+
 }

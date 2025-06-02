@@ -10,4 +10,9 @@ public interface GroupeDao {
     void insertFanfaronGroupe(String nomFanfaron, int idGroupe);
     void deleteFanfaronGroupes(String nomFanfaron);
     List<Integer> findGroupeIdsByFanfaron(String nomFanfaron);
+    void insertGroupe(Groupe groupe);
+    void updateGroupe(int idGroupe, Groupe groupe);
+    void deleteGroupe(int idGroupe);
+    void deleteAppartenanceByGroupeId(int idGroupe);
+
 }
